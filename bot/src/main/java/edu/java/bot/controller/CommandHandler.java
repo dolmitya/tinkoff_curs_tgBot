@@ -31,7 +31,7 @@ public class CommandHandler {
     public SendMessage handle(Update update, Users users) {
         Long id = update.message().chat().id();
         String message = "Введите правильную ссылку(/cancel для отмены)";
-        if (users.find(id) && users.usersMap.get(id).state.equals(State.ADD_LINK)) {
+        if (users.contains(id) && users.usersMap.get(id).state.equals(State.ADD_LINK)) {
             String url = update.message().text();
             if (CheckerUrl.check(url)) {
                 users.usersMap.get(id).state = State.NONE;
@@ -46,7 +46,7 @@ public class CommandHandler {
             }
             return new SendMessage(id, message);
         }
-        if (users.find(id) && users.usersMap.get(id).state.equals(State.DEL_LINK)) {
+        if (users.contains(id) && users.usersMap.get(id).state.equals(State.DEL_LINK)) {
             String url = update.message().text();
             if (CheckerUrl.check(url)) {
                 users.usersMap.get(id).state = State.NONE;

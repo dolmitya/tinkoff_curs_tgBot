@@ -9,7 +9,7 @@ public class List implements Command {
     @Override
     public SendMessage apply(Update update, Users users) {
         User user = new User(update.message().chat().username(), update.message().chat().id());
-        if (users.find(user.getId())) {
+        if (users.contains(user.getId())) {
             return new SendMessage(update.message().chat().id(), users.usersMap.get(user.getId()).urlstoString());
         } else {
             return new SendMessage(update.message().chat().id(), "Вы не зарегистрированы");

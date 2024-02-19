@@ -10,7 +10,7 @@ public class Track implements Command {
     @Override
     public SendMessage apply(Update update, Users users) {
         User user = new User(update.message().chat().username(), update.message().chat().id());
-        if (users.find(user.getId())) {
+        if (users.contains(user.getId())) {
             users.usersMap.get(user.getId()).state = State.ADD_LINK;
             return new SendMessage(update.message().chat().id(), "Вставьте ссылку на источник(/cancel для отмены)");
         } else {

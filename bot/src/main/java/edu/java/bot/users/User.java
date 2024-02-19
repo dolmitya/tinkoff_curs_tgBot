@@ -36,6 +36,10 @@ public class User {
         return id;
     }
 
+    public Set<String> getSet() {
+        return urls;
+    }
+
     public String urlstoString() {
         if (!urls.isEmpty()) {
             return String.join(
