@@ -22,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @WireMockTest
 class GitHubClientTest {
     static final String BODY_REQUEST = "{\"name\": \"repka\"}";
-    static final String URL = "/repos/DOLMITYA/DDD";
     static final String ERROR_404 = "404 NOT_FOUND \"Link is not valid\"";
+    static final String URL = "/repos/DOLMITYA/DDD";
     static final String ERROR_500 = "500 INTERNAL_SERVER_ERROR \"Internal Server Error\"";
 
     @Autowired
