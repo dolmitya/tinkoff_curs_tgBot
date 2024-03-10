@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {ScrapperApplication.class})
 @WireMockTest
-class StackoverflowClientTest {
+class StackOverflowClientTest {
     static final String BODY_REQUEST = "{\"items\":[{\"question_id\":148}]}";
     static final String URL = "/questions/52841620?site=stackoverflow";
     static final String ERROR_404 = "404 NOT_FOUND \"Link is not valid\"";
@@ -34,7 +34,7 @@ class StackoverflowClientTest {
 
     @DynamicPropertySource
     public static void setUpMockBaseUrl(DynamicPropertyRegistry registry) {
-        registry.add("app.stack-overflow-base-url", wireMockExtension::baseUrl);
+        registry.add("app.base-url.stack-overflow-base-url", wireMockExtension::baseUrl);
     }
 
     @Test
