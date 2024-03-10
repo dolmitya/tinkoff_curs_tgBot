@@ -1,21 +1,21 @@
 package edu.java.client;
 
-import edu.java.dto.RepositoryDto;
+import edu.java.dto.QuestionDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
-public class GitHubClient {
+public class StackOverflowClient {
     private final WebClient webClient;
 
-    public GitHubClient(WebClient webClient) {
+    public StackOverflowClient(WebClient webClient) {
         this.webClient = webClient;
     }
 
-    public RepositoryDto getRep(String name, String reposName) {
-        return webClient.get().uri("/repos/{name}/{reposName}", name, reposName)
+    public QuestionDto getQuestion(long ids) {
+        return webClient.get().uri("/questions/{ids}?site=stackoverflow", ids)
             .retrieve().onStatus(
                 HttpStatusCode::is4xxClientError,
                 error -> Mono.error(new ResponseStatusException(
@@ -26,6 +26,6 @@ public class GitHubClient {
                 error -> Mono.error(new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error"
                 ))
-            ).bodyToMono(RepositoryDto.class).block();
+            ).bodyToMono(QuestionDto.class).block();
     }
 }

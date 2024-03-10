@@ -4,7 +4,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.ScrapperApplication;
-import edu.java.DTO.Question;
+import edu.java.dto.QuestionDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -27,7 +27,7 @@ class StackoverflowClientTest {
     static final String ERROR_500 = "500 INTERNAL_SERVER_ERROR \"Internal Server Error\"";
 
     @Autowired
-    StackoverflowClient stackOverflowClient;
+    StackOverflowClient stackOverflowClient;
     @RegisterExtension
     static WireMockExtension wireMockExtension = WireMockExtension.newInstance()
         .options(wireMockConfig().dynamicPort().dynamicPort()).build();
@@ -46,7 +46,7 @@ class StackoverflowClientTest {
             .withBody(BODY_REQUEST)
             .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
         ));
-        Question question = stackOverflowClient.getQuestion(52841620);
+        QuestionDto question = stackOverflowClient.getQuestion(52841620);
         assertEquals(148, question.items().getFirst().id());
     }
 

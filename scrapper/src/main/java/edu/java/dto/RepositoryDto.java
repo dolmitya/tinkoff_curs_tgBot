@@ -1,9 +1,9 @@
-package edu.java.DTO;
+package edu.java.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-public record Repository(
+public record RepositoryDto(
     @JsonProperty("name") String name,
     @JsonProperty("created_at") OffsetDateTime createdAt,
     @JsonProperty("updated_at") OffsetDateTime updatedAt,

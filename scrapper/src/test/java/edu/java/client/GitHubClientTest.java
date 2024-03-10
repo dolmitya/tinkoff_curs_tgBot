@@ -4,7 +4,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.ScrapperApplication;
-import edu.java.DTO.Repository;
+import edu.java.dto.RepositoryDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -46,7 +46,7 @@ class GitHubClientTest {
             .withBody(BODY_REQUEST)
             .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
         ));
-        Repository rep = gitHubClient.getRep("DOLMITYA", "DDD");
+        RepositoryDto rep = gitHubClient.getRep("DOLMITYA", "DDD");
         assertEquals("repka", rep.name());
     }
 
