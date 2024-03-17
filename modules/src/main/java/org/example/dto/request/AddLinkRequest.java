@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.net.URI;
 
 public record AddLinkRequest(
-    @Schema(description = "Ссылка", example = "https://api.github.com/AlexSpeal")
+    @Schema(description = "Ссылка", example = "https://api.github.com/dolmitya")
     @NotNull
     URI link
 ) {

@@ -7,7 +7,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <changeSet id="init_tables" author="user1">
+    <changeSet id="init_tables" author="user65">
         <sqlFile path="liquibase/create_chat_table.sql" relativeToChangelogFile="true"/>
         <sqlFile path="liquibase/create_link_table.sql" relativeToChangelogFile="true"/>
         <sqlFile path="liquibase/create_chat_to_link.sql" relativeToChangelogFile="true"/>

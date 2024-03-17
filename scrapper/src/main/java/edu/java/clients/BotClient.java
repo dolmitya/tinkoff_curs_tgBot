@@ -1,4 +1,4 @@
-package edu.java.client;
+package edu.java.clients;
 
 import org.example.dto.request.SendUpdateRequest;
 import org.springframework.http.HttpStatus;
