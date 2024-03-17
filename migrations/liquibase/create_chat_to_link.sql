@@ -1,6 +1,7 @@
-create table ChatLink
+create table chat_link
 (
-    idChat bigint references chat(idChat),
-    idLink bigint references link(idLink),
-    constraint chat_link_pkey primary key (idChat,idLink)
+    chat_id bigint references chat(chat_id),
+    link_id bigint references link(link_id),
+    constraint chat_link_pkey primary key (chat_id,link_id)
+
 )

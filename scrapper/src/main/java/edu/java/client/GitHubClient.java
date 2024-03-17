@@ -1,6 +1,6 @@
 package edu.java.client;
 
-import edu.java.DTO.Repository;
+import edu.java.dto.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
