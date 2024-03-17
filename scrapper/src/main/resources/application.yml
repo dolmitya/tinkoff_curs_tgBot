@@ -1,4 +1,6 @@
 app:
+  git-hub-base-url: "https://api.github.com"
+  stack-overflow-base-url: "https://api.stackexchange.com/2.3"
   scheduler:
     enable: true
     interval: 10s
@@ -13,3 +15,7 @@ server:
 
 logging:
   config: classpath:log4j2-plain.xml
+
+  springdoc:
+    swagger-ui:
+      path: /swagger-ui
