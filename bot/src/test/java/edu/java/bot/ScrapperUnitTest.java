@@ -1,17 +1,21 @@
-package bot;
+package edu.java.bot;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.configureFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import edu.java.bot.client.ScrapperClient;
+import edu.java.bot.configuration.ScrapperClientConfiguration;
 import org.example.dto.request.AddLinkRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class ScrapperUnitTest {
     private WireMockServer wireMockServer;
@@ -22,22 +26,23 @@ public class ScrapperUnitTest {
         wireMockServer = new WireMockServer();
         wireMockServer.start();
         configureFor("localhost", wireMockServer.port());
-        client = new ScrapperClient("http://localhost:"+wireMockServer.port());
+        client = new ScrapperClientConfiguration().getScrapperClient("http://localhost:" + wireMockServer.port());
     }
 
     @AfterEach
     public void teardown() {
         wireMockServer.stop();
     }
+
     @Test
-    public void createLinkSuccess() {
-        var request = new AddLinkRequest("https://api.github.com");
+    public void createLink() throws URISyntaxException {
+        var request = new AddLinkRequest( new URI("https://api.github.com"));
         var response = """
-                {
-                  "id": 1,
-                  "url": "https://api.github.com"
-                }
-                """;
+            {
+              "id": 1,
+              "url": "https://api.github.com"
+            }
+            """;
 
         stubFor(post(urlEqualTo("/links"))
             .willReturn(aResponse()
@@ -46,7 +51,29 @@ public class ScrapperUnitTest {
                 .withBody(response)
             ));
 
-        var clientResponse = client.setLink(1L,request);
+        var clientResponse = client.setLink(1L, request);
+        assertThat(clientResponse.id()).isEqualTo(1L);
+        assertThat(clientResponse.url().toString()).isEqualTo("https://api.github.com");
+    }
+
+    @Test
+    public void deleteLink() throws URISyntaxException {
+        var request = new AddLinkRequest(new URI("https://api.github.com"));
+        var response = """
+            {
+              "id": 1,
+              "url": "https://api.github.com"
+            }
+            """;
+
+        stubFor(delete(urlEqualTo("/links"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json")
+                .withBody(response)
+            ));
+
+        var clientResponse = client.deleteLink(1L, request);
         assertThat(clientResponse.id()).isEqualTo(1L);
         assertThat(clientResponse.url().toString()).isEqualTo("https://api.github.com");
     }
