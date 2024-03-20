@@ -2,7 +2,6 @@ package edu.java.bot.controller;
 
 import com.pengrad.telegrambot.UpdatesListener;
 import edu.java.bot.users.Users;
-import org.springframework.stereotype.Component;
 
 public class TelegramBot extends com.pengrad.telegrambot.TelegramBot {
 
