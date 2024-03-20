@@ -1,10 +1,10 @@
-package edu.java.client;
+package edu.java.clients;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.ScrapperApplication;
-import edu.java.DTO.Question;
+import edu.java.dto.Question;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -27,14 +27,14 @@ class StackoverflowClientTest {
     static final String ERROR_500 = "500 INTERNAL_SERVER_ERROR \"Internal Server Error\"";
 
     @Autowired
-    StackoverflowClient stackOverflowClient;
+    StackOverflowClient stackOverflowClient;
     @RegisterExtension
     static WireMockExtension wireMockExtension = WireMockExtension.newInstance()
         .options(wireMockConfig().dynamicPort().dynamicPort()).build();
 
     @DynamicPropertySource
     public static void setUpMockBaseUrl(DynamicPropertyRegistry registry) {
-        registry.add("app.stack-overflow-base-url", wireMockExtension::baseUrl);
+        registry.add("app.base-url.stack-overflow-base-url", wireMockExtension::baseUrl);
     }
 
     @Test

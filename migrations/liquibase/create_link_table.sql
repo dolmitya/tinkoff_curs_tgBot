@@ -1,9 +1,9 @@
 create table link
 (
-    idLink             bigint generated always as identity,
-    url            text                     not null,
-
-    primary key (idLInk),
-    unique (url),
-    update_at  timestamp with time zone not null
+    link_id    bigserial,
+    url        text                     not null,
+    updated_at timestamp with time zone not null,
+    last_update timestamp with time zone not null,
+    primary key (link_id),
+    unique (url)
 )
