@@ -45,7 +45,8 @@ public class JdbcChatDao implements ChatRepository {
 
     @Override
     public String getState(Long id) {
-        return jdbcTemplate.query("SELECT state FROM chat WHERE chat_id=?", new BeanPropertyRowMapper<>(StateDto.class), id).getFirst().getState();
+        return jdbcTemplate.query("SELECT state FROM chat WHERE chat_id=?",
+            new BeanPropertyRowMapper<>(StateDto.class), id).getFirst().getState();
     }
 
     @Transactional

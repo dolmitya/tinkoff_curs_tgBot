@@ -1,7 +1,6 @@
 package edu.java.dao.interfaces;
 
 import edu.java.dto.jdbc.ChatDto;
-import org.example.dto.response.StateResponse;
 import java.util.List;
 
 public interface ChatRepository {
@@ -12,5 +11,6 @@ public interface ChatRepository {
     void setState(Long id, String state);
 
     String getState(Long id);
+
     List<ChatDto> findAll();
 }

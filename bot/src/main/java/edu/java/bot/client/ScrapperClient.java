@@ -21,7 +21,7 @@ public class ScrapperClient {
     }
 
     public void createChat(Long chat, String username) {
-        webClient.post().uri("/tg-chat/{id}/{username}", chat, username).accept(MediaType.APPLICATION_JSON)
+        webClient.post().uri("/tg-chat/{id}", chat).accept(MediaType.APPLICATION_JSON)
             .body(Mono.just(username), String.class).retrieve().onStatus(
                 HttpStatusCode::is4xxClientError,
                 error -> Mono.error(new ResponseStatusException(

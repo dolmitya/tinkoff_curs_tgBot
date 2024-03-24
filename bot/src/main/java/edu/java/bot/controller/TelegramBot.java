@@ -1,14 +1,23 @@
 package edu.java.bot.controller;
 
 import com.pengrad.telegrambot.UpdatesListener;
+import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.client.ScrapperClient;
+import edu.java.bot.configuration.ApplicationConfig;
 
 public class TelegramBot extends com.pengrad.telegrambot.TelegramBot {
 
-    public TelegramBot(String botToken) {
-        super(botToken);
+    private CommandHandler handler;
+
+    public TelegramBot(ApplicationConfig botToken, ScrapperClient scrapperClient) {
+        super(botToken.telegramToken());
+        handler = new CommandHandler(scrapperClient);
     }
 
-    private CommandHandler handler = new CommandHandler();
+    public void sendMessage(SendMessage sendMessage)
+    {
+        execute(sendMessage);
+    }
 
     public void run() {
         this.setUpdatesListener(updates -> {

@@ -2,15 +2,15 @@ package edu.java.bot.commands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.check.CheckerUrl;
 import edu.java.bot.client.ScrapperClient;
-import org.example.dto.request.AddLinkRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import java.net.URI;
 import java.net.URISyntaxException;
+import org.example.dto.LinkParser;
+import org.example.dto.request.AddLinkRequest;
+import org.springframework.stereotype.Component;
 
 @Component
+@SuppressWarnings("MultipleStringLiterals")
 public class AddDelLInk {
     private final ScrapperClient scrapperClient;
 
@@ -21,7 +21,7 @@ public class AddDelLInk {
     public SendMessage addLink(Update update, Long id) {
         String message = "Такая ссылка уже существует!";
         String url = update.message().text();
-        if (CheckerUrl.check(url)) {
+        if (LinkParser.check(url)) {
             if (scrapperClient.getLinks(id).links().stream()
                 .noneMatch(link -> link.url().toString().equals(url))) {
                 message = "Ссылка добавлена для отсживания";
@@ -45,7 +45,7 @@ public class AddDelLInk {
     public SendMessage delLink(Update update, Long id) {
         String message = "Такой ссылки у вас нет в отслеживаемых!";
         String url = update.message().text();
-        if (CheckerUrl.check(url)) {
+        if (LinkParser.check(url)) {
             if (scrapperClient.getLinks(id).links().stream()
                 .anyMatch(link -> link.url().toString().equals(url))) {
                 try {

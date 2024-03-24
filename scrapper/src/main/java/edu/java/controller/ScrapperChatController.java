@@ -44,9 +44,9 @@ public class ScrapperChatController {
             })
     })
 
-    @PostMapping("/{id}/{username}/")
+    @PostMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public String registerChat(@PathVariable @Valid @Positive Long id, @PathVariable String username) {
+    public String registerChat(@PathVariable @Valid @Positive Long id, @RequestBody String username) {
         tgChatService.register(id, username);
         return "Удачно!";
     }
@@ -81,7 +81,6 @@ public class ScrapperChatController {
         tgChatService.unregister(id);
         return "Чат удалён";
     }
-
 
     @Operation(summary = "Обновить статус")
     @ApiResponses(value = {

@@ -3,7 +3,6 @@ package edu.java.bot.command;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.client.ScrapperClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,7 +18,7 @@ public class Track implements Command {
         String username = update.message().chat().username();
         long idChat = update.message().chat().id();
         try {
-            scrapperClient.createChat(idChat,username);
+            scrapperClient.createChat(idChat, username);
             scrapperClient.deleteChat(idChat);
         } catch (Exception e) {
             scrapperClient.setState(idChat, "ADD");

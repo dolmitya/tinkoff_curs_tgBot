@@ -3,7 +3,6 @@ package edu.java.bot.command;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.client.ScrapperClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,8 +21,9 @@ public class Untrack implements Command {
             scrapperClient.createChat(idChat, username);
             scrapperClient.deleteChat(idChat);
         } catch (Exception e) {
-            if(scrapperClient.getLinks(idChat).links().isEmpty())
+            if (scrapperClient.getLinks(idChat).links().isEmpty()) {
                 return new SendMessage(idChat, "Ваш список ссылок пуст, нечего удалять!");
+            }
             scrapperClient.setState(idChat, "DEL");
             return new SendMessage(idChat, "Вставьте ссылку на источник(/cancel для отмены)");
         }
