@@ -4,7 +4,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.ScrapperApplication;
-import edu.java.DTO.Repository;
+import edu.java.dto.RepositoryDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -21,9 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {ScrapperApplication.class})
 @WireMockTest
 class GitHubClientTest {
-    static final String BODY_REQUEST = "{\"name\": \"repka\"}";
+    static final String BODY_REQUEST = "{\"name\": \"vkusnoe_brevno\"}";
+    static final String URL = "/repos/AlexBebrovich/Plotina";
     static final String ERROR_404 = "404 NOT_FOUND \"Link is not valid\"";
-    static final String URL = "/repos/DOLMITYA/DDD";
     static final String ERROR_500 = "500 INTERNAL_SERVER_ERROR \"Internal Server Error\"";
 
     @Autowired
@@ -34,7 +34,7 @@ class GitHubClientTest {
 
     @DynamicPropertySource
     public static void setUpMockBaseUrl(DynamicPropertyRegistry registry) {
-        registry.add("app.git-hub-base-url", wireMockExtension::baseUrl);
+        registry.add("app.base-url.git-hub-base-url", wireMockExtension::baseUrl);
     }
 
     @Test
@@ -46,8 +46,8 @@ class GitHubClientTest {
             .withBody(BODY_REQUEST)
             .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
         ));
-        Repository rep = gitHubClient.getRep("DOLMITYA", "DDD");
-        assertEquals("repka", rep.name());
+        RepositoryDto rep = gitHubClient.getRep("AlexBebrovich", "Plotina");
+        assertEquals("vkusnoe_brevno", rep.name());
     }
 
     @Test
@@ -62,7 +62,7 @@ class GitHubClientTest {
 
         String message = "";
         try {
-            gitHubClient.getRep("AlexNone", "DDD");
+            gitHubClient.getRep("AlexNone", "Plotina");
         } catch (ResponseStatusException e) {
             message = e.getMessage();
         }
@@ -81,7 +81,7 @@ class GitHubClientTest {
 
         String message = "";
         try {
-            gitHubClient.getRep("DOLMITYA", "DDD");
+            gitHubClient.getRep("AlexBebrovich", "Plotina");
         } catch (ResponseStatusException e) {
             message = e.getMessage();
         }
