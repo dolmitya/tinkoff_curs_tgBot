@@ -1,7 +1,6 @@
 package edu.java.bot.controller;
 
 import com.pengrad.telegrambot.UpdatesListener;
-import edu.java.bot.users.Users;
 
 public class TelegramBot extends com.pengrad.telegrambot.TelegramBot {
 
@@ -9,13 +8,11 @@ public class TelegramBot extends com.pengrad.telegrambot.TelegramBot {
         super(botToken);
     }
 
-    Users users = new Users();
-
     private CommandHandler handler = new CommandHandler();
 
     public void run() {
         this.setUpdatesListener(updates -> {
-                updates.forEach(update -> execute(handler.handle(update, users)));
+                updates.forEach(update -> execute(handler.handle(update)));
                 return UpdatesListener.CONFIRMED_UPDATES_ALL;
             }
         );

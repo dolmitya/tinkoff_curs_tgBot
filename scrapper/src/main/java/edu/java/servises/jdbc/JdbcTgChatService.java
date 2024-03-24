@@ -26,7 +26,7 @@ public class JdbcTgChatService implements TgChatService {
         if (jdbcChatDao.findAll().stream().anyMatch(c -> c.getChatId() == tgChatId)) {
             throw new ChatAlreadyExistsException("Чат уже создан!");
         }
-        ChatDto chatDto = new ChatDto(tgChatId, OffsetDateTime.now(), username);
+        ChatDto chatDto = new ChatDto(tgChatId, OffsetDateTime.now(), username, "NONE");
         jdbcChatDao.add(chatDto);
     }
 
@@ -44,5 +44,15 @@ public class JdbcTgChatService implements TgChatService {
             }
         }
         jdbcChatDao.remove(tgChatId);
+    }
+
+    @Override
+    public void setState(long tgChatId, String state) {
+        jdbcChatDao.setState(tgChatId, state);
+    }
+
+    @Override
+    public String getState(long tgChatId) {
+        return jdbcChatDao.getState(tgChatId);
     }
 }

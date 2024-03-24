@@ -2,70 +2,56 @@ package edu.java.bot.controller;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.check.CheckerUrl;
+import edu.java.bot.client.ScrapperClient;
 import edu.java.bot.command.Command;
 import edu.java.bot.command.Help;
 import edu.java.bot.command.List;
 import edu.java.bot.command.Start;
 import edu.java.bot.command.Track;
 import edu.java.bot.command.Untrack;
-import edu.java.bot.users.State;
-import edu.java.bot.users.Users;
+import edu.java.bot.commands.AddDelLInk;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import java.util.Map;
 
+@Component
 @SuppressWarnings("MultipleStringLiterals")
 public class CommandHandler {
 
+    private ScrapperClient scrapperClient;
     private final Map<String, Command> commands;
 
     public CommandHandler() {
         this.commands = Map.of(
-            "/start", new Start(),
+            "/start", new Start(scrapperClient),
             "/help", new Help(),
-            "/list", new List(),
-            "/track", new Track(),
-            "/untrack", new Untrack()
+            "/list", new List(scrapperClient),
+            "/track", new Track(scrapperClient),
+            "/untrack", new Untrack(scrapperClient)
         );
     }
 
-    public SendMessage handle(Update update, Users users) {
-        Long id = update.message().chat().id();
-        String message = "Введите правильную ссылку(/cancel для отмены)";
-        if (users.contains(id) && users.usersMap.get(id).state.equals(State.ADD_LINK)) {
-            String url = update.message().text();
-            if (CheckerUrl.check(url)) {
-                users.usersMap.get(id).state = State.NONE;
-                if (users.usersMap.get(id).addUrl(url)) {
-                    message = "Ссылка добавлена для отсживания";
-                } else {
-                    message = "Такая ссылка уже существует";
+    public SendMessage handle(Update update) {
+        if (update.message().text()!=null) {
+            Long id = update.message().chat().id();
+            String username = update.message().chat().username();
+            try {
+                scrapperClient.createChat(id, username);
+                scrapperClient.deleteChat(id);
+            } catch (Exception e) {
+                if (scrapperClient.getState(id).equals("ADD")) {
+                    return new AddDelLInk(scrapperClient).addLink(update, id);
                 }
-            } else if (url.equals("/cancel")) {
-                users.usersMap.get(id).state = State.NONE;
-                message = "Вы отменили ввод ссылки";
-            }
-            return new SendMessage(id, message);
-        }
-        if (users.contains(id) && users.usersMap.get(id).state.equals(State.DEL_LINK)) {
-            String url = update.message().text();
-            if (CheckerUrl.check(url)) {
-                users.usersMap.get(id).state = State.NONE;
-                if (users.usersMap.get(id).removeUrl(url)) {
-                    message = "Ссылка больше не отслеживается";
-                } else {
-                    message = "Такой ссылки у вас нет в отслеживаемых";
+                if (scrapperClient.getState(id).equals("DEL")) {
+                    return new AddDelLInk(scrapperClient).delLink(update, id);
                 }
-            } else if (url.equals("/cancel")) {
-                users.usersMap.get(id).state = State.NONE;
-                message = "Вы отменили ввод ссылки";
             }
-            return new SendMessage(id, message);
+            String message = update.message().text();
+            Command command = commands.get(message);
+            if (command != null) {
+                return command.apply(update);
+            }
         }
-        message = update.message().text();
-        Command command = commands.get(message);
-        if (command != null) {
-            return command.apply(update, users);
-        }
-        return new SendMessage(id, "Такой команды не существует!");
+        return new SendMessage(update.message().chat().id(), "Такой команды не существует!");
     }
 }

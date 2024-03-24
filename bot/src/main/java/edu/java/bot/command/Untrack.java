@@ -2,19 +2,31 @@ package edu.java.bot.command;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.users.State;
-import edu.java.bot.users.User;
-import edu.java.bot.users.Users;
+import edu.java.bot.client.ScrapperClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Untrack implements Command {
+    private final ScrapperClient scrapperClient;
+
+    public Untrack(ScrapperClient scrapperClient) {
+        this.scrapperClient = scrapperClient;
+    }
+
     @Override
-    public SendMessage apply(Update update, Users users) {
-        User user = new User(update.message().chat().username(), update.message().chat().id());
-        if (users.contains(user.getId())) {
-            users.usersMap.get(user.getId()).state = State.DEL_LINK;
-            return new SendMessage(update.message().chat().id(), "Вставьте ссылку на источник(/cancel для отмены)");
-        } else {
-            return new SendMessage(update.message().chat().id(), "Вы не зарегистрированы");
+    public SendMessage apply(Update update) {
+        String username = update.message().chat().username();
+        long idChat = update.message().chat().id();
+        try {
+            scrapperClient.createChat(idChat, username);
+            scrapperClient.deleteChat(idChat);
+        } catch (Exception e) {
+            if(scrapperClient.getLinks(idChat).links().isEmpty())
+                return new SendMessage(idChat, "Ваш список ссылок пуст, нечего удалять!");
+            scrapperClient.setState(idChat, "DEL");
+            return new SendMessage(idChat, "Вставьте ссылку на источник(/cancel для отмены)");
         }
+        return new SendMessage(idChat, "Вы не зарегистрированы!");
     }
 }
