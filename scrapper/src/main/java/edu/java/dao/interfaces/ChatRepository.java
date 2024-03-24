@@ -8,5 +8,9 @@ public interface ChatRepository {
 
     void remove(Long id);
 
+    void setState(Long id, String state);
+
+    String getState(Long id);
+
     List<ChatDto> findAll();
 }

@@ -1,7 +1,6 @@
 package edu.java.scheduler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import edu.java.LinkParser;
 import edu.java.clients.BotClient;
 import edu.java.clients.GitHubClient;
 import edu.java.clients.StackOverflowClient;
@@ -19,6 +18,7 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.dto.LinkParser;
 import org.example.dto.request.SendUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
