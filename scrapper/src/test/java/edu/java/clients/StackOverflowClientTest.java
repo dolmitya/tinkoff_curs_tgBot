@@ -4,7 +4,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.ScrapperApplication;
-import edu.java.dto.Question;
+import edu.java.dto.jdbc.stackOverflow.Question;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {ScrapperApplication.class})
 @WireMockTest
-class StackoverflowClientTest {
+class StackOverflowClientTest {
     static final String BODY_REQUEST = "{\"items\":[{\"question_id\":148}]}";
     static final String URL = "/questions/52841620?site=stackoverflow";
     static final String ERROR_404 = "404 NOT_FOUND \"Link is not valid\"";

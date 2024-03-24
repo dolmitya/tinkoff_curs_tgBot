@@ -17,15 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 @SuppressWarnings("MagicNumber")
 public class JdbcLinkDao implements LinkRepository {
-
     private final JdbcTemplate jdbcTemplate;
 
     @Transactional
     @Override
     public void add(LinkDto link) {
         try {
-            jdbcTemplate.update("INSERT INTO link(url,updated_at,last_update) VALUES (?,?,?)",
-                link.getUrl().toString(), link.getUpdatedAt(), link.getLastUpdate()
+            jdbcTemplate.update("INSERT INTO link(url,updated_at,last_update,type,data) VALUES (?,?,?,?,?)",
+                link.getUrl().toString(), link.getUpdatedAt(), link.getLastUpdate(), link.getType(), link.getData()
             );
         } catch (DataAccessException exception) {
             throw new DuplicateLinkException("Введена существующая ссылка!");
@@ -54,15 +53,14 @@ public class JdbcLinkDao implements LinkRepository {
     }
 
     @Override
-    public void updateUpdateTime(long linkId, OffsetDateTime time) {
-        jdbcTemplate.update("UPDATE link SET updated_at=? WHERE link_id=?", time, linkId);
+    public void updateData(long linkId, OffsetDateTime time, String data) {
+        jdbcTemplate.update("UPDATE link SET updated_at=?,data=? WHERE link_id=?", time, data, linkId);
     }
 
     @Override
     public void updateCheckTime(long linkId, OffsetDateTime time) {
         jdbcTemplate.update("UPDATE link SET last_update=? WHERE link_id=?", time, linkId);
     }
-
 
     @Override
     public List<LinkDto> findOldLinksToCheck(OffsetDateTime time) {
@@ -71,6 +69,5 @@ public class JdbcLinkDao implements LinkRepository {
             new BeanPropertyRowMapper<>(LinkDto.class),
             time
         );
-
     }
 }
