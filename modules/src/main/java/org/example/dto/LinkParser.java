@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("MagicNumber")
 public class LinkParser {
     private LinkParser() {
 
@@ -38,8 +39,8 @@ public class LinkParser {
             urlConnection.connect();
             int responsecode = urlConnection.getResponseCode();
             if (responsecode == 200) {
-                return !urlMatcher(link.toURI(), REGEX_OWNER).isEmpty() ||
-                    !urlMatcher(link.toURI(), REGEX_QUESTION_ID).isEmpty();
+                return !urlMatcher(link.toURI(), REGEX_OWNER).isEmpty()
+                    || !urlMatcher(link.toURI(), REGEX_QUESTION_ID).isEmpty();
             }
         } catch (Exception ignored) {
 

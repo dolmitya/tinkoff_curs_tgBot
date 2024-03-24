@@ -14,8 +14,7 @@ public class TelegramBot extends com.pengrad.telegrambot.TelegramBot {
         handler = new CommandHandler(scrapperClient);
     }
 
-    public void sendMessage(SendMessage sendMessage)
-    {
+    public void sendMessage(SendMessage sendMessage) {
         execute(sendMessage);
     }
 

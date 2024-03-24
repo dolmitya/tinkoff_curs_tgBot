@@ -43,8 +43,7 @@ public class BotController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public String sendUpdate(@RequestBody @Valid SendUpdateRequest sendUpdateRequest) {
-        for(Long idChat: sendUpdateRequest.tgChatIds())
-        {
+        for (Long idChat : sendUpdateRequest.tgChatIds()) {
             telegramBot.sendMessage(new SendMessage(idChat, sendUpdateRequest.description()));
         }
         return "Обновление отправлено!";
