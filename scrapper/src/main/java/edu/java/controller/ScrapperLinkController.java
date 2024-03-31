@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import java.net.URISyntaxException;
-import lombok.AllArgsConstructor;
 import org.example.dto.request.AddLinkRequest;
 import org.example.dto.response.ApiErrorResponse;
 import org.example.dto.response.LinkResponse;
@@ -21,17 +20,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/links")
-@AllArgsConstructor
 public class ScrapperLinkController {
     @Autowired
-    private final LinkService linkService;
+    private LinkService linkService;
 
     @Operation(summary = "Получить все отслеживаемые ссылки")
     @ApiResponses(value = {
@@ -56,7 +54,7 @@ public class ScrapperLinkController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ListLinksResponse getLinks(@RequestParam @Positive Long tgChatId) {
+    public ListLinksResponse getLinks(@RequestHeader(name = "Tg-Chat-Id") @Positive Long tgChatId) {
         return linkService.listAll(tgChatId);
 
     }
@@ -84,7 +82,7 @@ public class ScrapperLinkController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public LinkResponse setLink(
-        @RequestParam @Positive Long tgChatId,
+        @RequestHeader("Tg-Chat-Id") @Positive Long tgChatId,
         @RequestBody @Valid AddLinkRequest addLinkRequest
     ) throws URISyntaxException {
         linkService.add(tgChatId, addLinkRequest.link());
@@ -123,7 +121,7 @@ public class ScrapperLinkController {
     @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
     public LinkResponse deleteLink(
-        @RequestParam @Positive Long tgChatId,
+        @RequestHeader("Tg-Chat-Id") @Positive Long tgChatId,
         @RequestBody @Valid AddLinkRequest addLinkRequest
     )
         throws NotFoundException, URISyntaxException {

@@ -35,7 +35,7 @@ public class BotUnitTest {
     @Test
     public void updates() {
         List<Long> list = new ArrayList<>();
-        list.add(0, 2L);
+        list.addFirst(2L);
         var request = new SendUpdateRequest(1L, "https://api.github.com", "лол", list);
         stubFor(post(urlEqualTo("/updates"))
             .willReturn(aResponse()
