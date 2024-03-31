@@ -22,6 +22,7 @@ public class JpaLinkUpdaterService implements LinkUpdater {
     public void check(long linkId, OffsetDateTime time) {
         jpaLinkRepository.updateCheckTime(linkId, time);
 
+
     }
 
     @Override
