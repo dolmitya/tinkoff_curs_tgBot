@@ -1,5 +1,7 @@
 package edu.java.servises.interfaces;
 
+import org.example.dto.response.StateResponse;
+
 public interface TgChatService {
     void register(long tgChatId, String username);
 
@@ -7,5 +9,5 @@ public interface TgChatService {
 
     void setState(long tgChatId, String state);
 
-    String getState(long tgChatId);
+    StateResponse getState(long tgChatId);
 }

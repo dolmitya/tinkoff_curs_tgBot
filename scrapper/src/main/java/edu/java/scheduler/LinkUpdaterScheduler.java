@@ -11,8 +11,8 @@ import edu.java.dto.jdbc.github.Github;
 import edu.java.dto.jdbc.stackOverflow.Question;
 import edu.java.servises.handlers.GithubHandler;
 import edu.java.servises.handlers.StackOverflowHandler;
-import edu.java.servises.jdbc.JdbcLinkService;
-import edu.java.servises.jdbc.LinkUpdaterService;
+import edu.java.servises.interfaces.LinkService;
+import edu.java.servises.interfaces.LinkUpdater;
 import io.swagger.v3.core.util.Json;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -20,7 +20,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.LinkParser;
 import org.example.dto.request.SendUpdateRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -30,10 +29,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @SuppressWarnings("MultipleStringLiterals")
 public class LinkUpdaterScheduler {
-    private final JdbcLinkService jdbcLinkService;
-
-    private final LinkUpdaterService linkUpdaterService;
-    @Autowired
+    private final LinkService linkService;
+    private final LinkUpdater linkUpdaterService;
     private final BotClient botClient;
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
@@ -56,7 +53,7 @@ public class LinkUpdaterScheduler {
                     links.getLinkId(),
                     links.getUrl().toString(),
                     description,
-                    jdbcLinkService.getLinkedChadId(links.getLinkId())
+                    linkService.getLinkedChadId(links.getLinkId())
                 ));
             }
         }

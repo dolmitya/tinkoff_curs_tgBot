@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import java.net.URISyntaxException;
-import lombok.AllArgsConstructor;
 import org.example.dto.request.AddLinkRequest;
 import org.example.dto.response.ApiErrorResponse;
 import org.example.dto.response.LinkResponse;
@@ -28,10 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/links")
-@AllArgsConstructor
 public class ScrapperLinkController {
     @Autowired
-    private final LinkService linkService;
+    private LinkService linkService;
 
     @Operation(summary = "Получить все отслеживаемые ссылки")
     @ApiResponses(value = {

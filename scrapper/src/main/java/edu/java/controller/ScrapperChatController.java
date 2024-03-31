@@ -8,9 +8,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
 import org.example.dto.response.ApiErrorResponse;
 import org.example.dto.response.StateResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/tg-chat")
-@AllArgsConstructor
 public class ScrapperChatController {
-    private final TgChatService tgChatService;
+    @Autowired
+    private TgChatService tgChatService;
 
     @Operation(summary = "Зарегистрировать чат")
     @ApiResponses(value = {
@@ -107,9 +107,9 @@ public class ScrapperChatController {
                         = ApiErrorResponse.class))
             })
     })
-    @PostMapping("/state/{id}/{state}")
+    @PostMapping("/state/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void setState(@PathVariable @Valid @Positive Long id, @PathVariable String state) {
+    public void setState(@PathVariable @Valid @Positive Long id, @RequestBody String state) {
         tgChatService.setState(id, state);
     }
 
@@ -141,6 +141,6 @@ public class ScrapperChatController {
     @GetMapping("/state/{id}")
     @ResponseStatus(HttpStatus.OK)
     public StateResponse getState(@PathVariable @Valid @Positive Long id) {
-        return new StateResponse(tgChatService.getState(id));
+        return tgChatService.getState(id);
     }
 }
