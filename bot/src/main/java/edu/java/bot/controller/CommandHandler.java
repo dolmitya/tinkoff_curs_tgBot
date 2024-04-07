@@ -35,10 +35,7 @@ public class CommandHandler {
         if (update.message().text() != null) {
             Long id = update.message().chat().id();
             String username = update.message().chat().username();
-            try {
-                scrapperClient.createChat(id, username);
-                scrapperClient.deleteChat(id);
-            } catch (Exception e) {
+            if (scrapperClient.isRegister(id)) {
                 if (scrapperClient.getState(id).state().equals("ADD")) {
                     return new AddDelLInk(scrapperClient).addLink(update, id);
                 }
