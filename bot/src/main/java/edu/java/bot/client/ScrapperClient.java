@@ -126,4 +126,14 @@ public class ScrapperClient {
                 ))
             ).bodyToMono(StateResponse.class).block();
     }
+
+    public Boolean isRegister(Long chat) {
+        return webClient.get().uri("/tg-chat/check-reg/{id}", chat).accept(MediaType.APPLICATION_JSON).retrieve()
+            .onStatus(
+                HttpStatusCode::is5xxServerError,
+                error -> Mono.error(new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error"
+                ))
+            ).bodyToMono(Boolean.class).block();
+    }
 }
