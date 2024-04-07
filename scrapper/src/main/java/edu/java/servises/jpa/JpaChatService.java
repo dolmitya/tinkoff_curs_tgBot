@@ -50,6 +50,11 @@ public class JpaChatService implements TgChatService {
     }
 
     @Override
+    public Boolean isRegister(long tgChatId) {
+        return jpaChatRepository.existsById(tgChatId);
+    }
+
+    @Override
     public StateResponse getState(long tgChatId) {
         return new StateResponse(jpaChatRepository.findById(tgChatId).orElseThrow().getState());
     }

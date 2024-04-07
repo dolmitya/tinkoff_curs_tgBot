@@ -143,4 +143,27 @@ public class ScrapperChatController {
     public StateResponse getState(@PathVariable @Valid @Positive Long id) {
         return tgChatService.getState(id);
     }
+
+    @Operation(summary = "Проверка существования чата")
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Статус успешно получен"
+        ),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Некорректные параметры запроса",
+            content = {
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation
+                        = ApiErrorResponse.class))
+            }),
+    })
+    @GetMapping("/check-reg/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Boolean isRegister(@PathVariable @Valid @Positive Long id) {
+        return tgChatService.isRegister(id);
+    }
+
 }

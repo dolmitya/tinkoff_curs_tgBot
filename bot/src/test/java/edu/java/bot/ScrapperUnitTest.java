@@ -1,42 +1,42 @@
 package edu.java.bot;
 
-import com.github.tomakehurst.wiremock.WireMockServer;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.configureFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.delete;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static org.assertj.core.api.Assertions.assertThat;
+import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
+import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.bot.client.ScrapperClient;
-import edu.java.bot.configuration.ScrapperClientConfiguration;
-import org.example.dto.request.AddLinkRequest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import java.net.URI;
 import java.net.URISyntaxException;
+import org.example.dto.request.AddLinkRequest;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.delete;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {BotApplication.class})
+@WireMockTest
 public class ScrapperUnitTest {
-    private WireMockServer wireMockServer;
+    @Autowired
     private ScrapperClient client;
 
-    @BeforeEach
-    public void setup() {
-        wireMockServer = new WireMockServer();
-        wireMockServer.start();
-        configureFor("localhost", wireMockServer.port());
-        client = new ScrapperClientConfiguration().getScrapperClient("http://localhost:" + wireMockServer.port());
-    }
+    @RegisterExtension
+    static WireMockExtension wireMockExtension = WireMockExtension.newInstance()
+        .options(wireMockConfig().dynamicPort().dynamicPort()).build();
 
-    @AfterEach
-    public void teardown() {
-        wireMockServer.stop();
+    @DynamicPropertySource
+    public static void setUpMockBaseUrl(DynamicPropertyRegistry registry) {
+        registry.add("app.base-url-scrapper", wireMockExtension::baseUrl);
     }
 
     @Test
     public void createLink() throws URISyntaxException {
-        var request = new AddLinkRequest( new URI("https://api.github.com"));
+        var request = new AddLinkRequest(new URI("https://api.github.com"));
         var response = """
             {
               "id": 1,
@@ -44,18 +44,16 @@ public class ScrapperUnitTest {
             }
             """;
 
-        stubFor(post(urlEqualTo("/links"))
+        wireMockExtension.stubFor(post(urlEqualTo("/links"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
                 .withBody(response)
             ));
-
         var clientResponse = client.setLink(1L, request);
         assertThat(clientResponse.id()).isEqualTo(1L);
         assertThat(clientResponse.url().toString()).isEqualTo("https://api.github.com");
     }
-
     @Test
     public void deleteLink() throws URISyntaxException {
         var request = new AddLinkRequest(new URI("https://api.github.com"));
@@ -66,16 +64,14 @@ public class ScrapperUnitTest {
             }
             """;
 
-        stubFor(delete(urlEqualTo("/links"))
+        wireMockExtension.stubFor(delete(urlEqualTo("/links"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
                 .withBody(response)
             ));
-
         var clientResponse = client.deleteLink(1L, request);
         assertThat(clientResponse.id()).isEqualTo(1L);
         assertThat(clientResponse.url().toString()).isEqualTo("https://api.github.com");
     }
-
 }
