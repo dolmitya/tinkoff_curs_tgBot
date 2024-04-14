@@ -106,7 +106,6 @@ services:
       - ./migrations:/liquibase/changelog/
     networks:
       - backend
-
 volumes:
   kafka1: { }
   kafka2: { }
