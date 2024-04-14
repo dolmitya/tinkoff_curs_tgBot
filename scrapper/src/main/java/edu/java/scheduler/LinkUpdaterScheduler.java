@@ -1,10 +1,9 @@
 package edu.java.scheduler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import edu.java.clients.BotClient;
 import edu.java.clients.GitHubClient;
-import edu.java.clients.interfaces.UpdateLinkService;
 import edu.java.clients.StackOverflowClient;
+import edu.java.clients.interfaces.UpdateLinkService;
 import edu.java.data.GitHubData;
 import edu.java.data.StackOverflowData;
 import edu.java.dto.jdbc.LinkDto;
