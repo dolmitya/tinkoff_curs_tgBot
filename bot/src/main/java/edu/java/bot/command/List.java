@@ -18,10 +18,7 @@ public class List implements Command {
     public SendMessage apply(Update update) {
         String username = update.message().chat().username();
         long idChat = update.message().chat().id();
-        try {
-            scrapperClient.createChat(idChat, username);
-            scrapperClient.deleteChat(idChat);
-        } catch (Exception e) {
+        if (scrapperClient.isRegister(idChat)) {
             ListLinksResponse links = scrapperClient.getLinks(idChat);
             StringBuilder resultLinks = new StringBuilder();
             if (links.size().equals(0)) {
@@ -33,7 +30,8 @@ public class List implements Command {
             }
 
             return new SendMessage(idChat, resultLinks.toString());
+        } else {
+            return new SendMessage(idChat, "Вы не авторизованы!");
         }
-        return new SendMessage(idChat, "Вы не авторизованы!");
     }
 }

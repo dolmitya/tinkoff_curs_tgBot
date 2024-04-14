@@ -107,9 +107,9 @@ public class ScrapperChatController {
                         = ApiErrorResponse.class))
             })
     })
-    @PostMapping("/state/{id}")
+    @PostMapping("/state/{id}/{state}")
     @ResponseStatus(HttpStatus.OK)
-    public void setState(@PathVariable @Valid @Positive Long id, @RequestBody String state) {
+    public void setState(@PathVariable @Valid @Positive Long id, @PathVariable String state) {
         tgChatService.setState(id, state);
     }
 

@@ -17,13 +17,11 @@ public class Track implements Command {
     public SendMessage apply(Update update) {
         String username = update.message().chat().username();
         long idChat = update.message().chat().id();
-        try {
-            scrapperClient.createChat(idChat, username);
-            scrapperClient.deleteChat(idChat);
-        } catch (Exception e) {
+        if (scrapperClient.isRegister(idChat)) {
             scrapperClient.setState(idChat, "ADD");
             return new SendMessage(idChat, "Вставьте ссылку на источник(/cancel для отмены)");
+        } else {
+            return new SendMessage(idChat, "Вы не зарегистрированы!");
         }
-        return new SendMessage(idChat, "Вы не зарегистрированы!");
     }
 }
