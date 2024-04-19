@@ -74,7 +74,7 @@ public class LinkUpdaterScheduler {
                 if (repository.branches().length > gitHubData.numberBranches()) {
                     description.append("В репозитории ").append(repository.repository().name())
                         .append(" Появилась новая ветка ")
-                        .append(repository.branches()[0].name()).append("\n");
+                        .append("\n");
                 } else if (repository.branches().length < gitHubData.numberBranches()) {
                     description.append("В репозитории ").append(repository.repository().name())
                         .append(" Исчезла ветка ").append("\n");

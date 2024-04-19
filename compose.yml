@@ -110,37 +110,25 @@ services:
   prometheus:
     image: prom/prometheus:latest
     volumes:
-      - ./prometheus:/etc/prometheus/
-    container_name: prometheus
-    hostname: prometheus
+      - ./prometheus.yml:/etc/prometheus.yml
+      - prometheus_data:/prometheus
     command:
-      - --config.file=/etc/prometheus/prometheus.yml
+      - --config.file=/etc/prometheus.yml
     ports:
       - 9090:9090
-    restart: unless-stopped
-    environment:
-      TZ: "Europe/Moscow"
-    networks:
-      - default
 
   grafana:
-    image: grafana/grafana
-    user: root
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
     depends_on:
       - prometheus
-    ports:
-      - 3000:3000
     volumes:
-      - ./grafana:/var/lib/grafana
-      - ./grafana/provisioning/:/etc/grafana/provisioning/
-    container_name: grafana
-    hostname: grafana
-    restart: unless-stopped
-    environment:
-      TZ: "Europe/Moscow"
-    networks:
-      - default
+      - grafana_data:/var/lib/grafana
+
 volumes:
+  prometheus_data: { }
+  grafana_data: { }
   kafka1: { }
   kafka2: { }
   kafka3: { }
