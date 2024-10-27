@@ -13,6 +13,8 @@ public record ApiErrorResponse(
     String exceptionName,
     @Schema(description = "Сообщение ошибки", example = "Неправильный тип поля")
     String exceptionMessage,
+    @Schema(description = "Трассировка стека", example = "[org.springframework.web.method.annotation."
+        + "HandlerMethodValidationException: 400 BAD_REQUEST]")
     String[] stackTrace
 ) {
 }

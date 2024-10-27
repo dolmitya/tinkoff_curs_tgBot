@@ -17,7 +17,6 @@ public class ExceptionApiHandler {
             "Validation Error",
             "400", exception.getClass().getSimpleName(),
             exception.getMessage(), new String[] {stackTrace}
-
         );
 
         return ResponseEntity.badRequest().body(response);
