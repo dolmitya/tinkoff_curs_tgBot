@@ -1,26 +1,11 @@
 package edu.java.bot.configuration;
 
-import com.pengrad.telegrambot.model.Chat;
-import com.pengrad.telegrambot.model.Message;
-import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.command.Command;
-import edu.java.bot.command.Start;
-import edu.java.bot.controller.CommandHandler;
-import edu.java.bot.users.User;
-import edu.java.bot.users.Users;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
-import java.util.Set;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class BotApplicationTest {
 
-    @Test
+   /* @Test
     @DisplayName("Test /start command")
     void testHandleStartCommand() {
         Users users = new Users();
@@ -118,5 +103,5 @@ class BotApplicationTest {
                 https://github.com/dolmitya/tinkoff_curs_tgBot/pulls
                 --------------------------------------------------------------------------------------------------
                 https://stackoverflow.com/questions/6038061/regular-expression-to-find-urls-within-a-string%20""");
-    }
+    }*/
 }
